@@ -16,7 +16,7 @@ unsigned char __xdata  __at (0x9002) mydata; // Write data to WDR
 void ili9486_init();
 void dis_color(unsigned int c);
 void show_char(unsigned int x, unsigned int y, unsigned int color, unsigned char f);
-void draw_rectangle(unsigned int x_l, unsigned int y_l, unsigned int x_h, unsigned int y_h, unsigned int color);
-void draw_image(unsigned int x_l, unsigned int y_l, unsigned int x_h, unsigned int y_h, img_type img, color_type plus_color, color_type minus_color);
+void draw_rectangle(unsigned int x_l, unsigned int y_l, unsigned int width, unsigned int height, unsigned int color);
+void draw_image(unsigned int x_l, unsigned int y_l, unsigned int width, unsigned int height, img_type img, color_type plus_color, color_type minus_color);
 
 #endif

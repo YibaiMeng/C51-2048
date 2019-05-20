@@ -118,6 +118,8 @@ void show_char(unsigned int x, unsigned int y, unsigned int color, unsigned char
 
 void draw_rectangle(unsigned int x_l, unsigned int y_l, unsigned int x_h, unsigned int y_h, unsigned int color) {
     unsigned char i, j;
+    x_h = x_l + x_h - 1;
+    y_h = y_l + y_h - 1;
     cmd = 0x2A; // set column address
     mydata = (x_l >> 8) & 1;
     mydata = (x_l & 0xFF);
@@ -143,6 +145,8 @@ void draw_rectangle(unsigned int x_l, unsigned int y_l, unsigned int x_h, unsign
 void draw_image(unsigned int x_l, unsigned int y_l, unsigned int x_h, unsigned int y_h, img_type img, color_type plus_color, color_type minus_color) {
     int8_t len; // Note the type, same as img_type. 
     long long int cnt; // Must be long enough to prevent overflow. 
+    x_h = x_h + x_l - 1;
+    y_h = y_h + y_l - 1;
     color_type color;
     cmd = 0x2A; // set column address
     mydata = (x_l >> 8) & 1;
