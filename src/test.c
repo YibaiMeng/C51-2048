@@ -15,8 +15,8 @@ void main(void) {
     show_char(176, 240, 0x00FF, '0');
     draw_rectangle(0, 0, 50, 50, 0x00FF);
     draw_rectangle(40, 40, 200, 200, 0x0FFF);
-    draw_image(50, 50, 120, 120, img_1024, 0x0FF0, 0x0000);
-    draw_image(80, 80, 150, 150, img_1024, 0x0FF0, 0x0000);
+    draw_image(50, 50, 71, 71, img_1024, 0x0FF0, 0x0000);
+    draw_image(80, 80, 71, 71, img_1024, 0x0FF0, 0x0000);
     while (1) {
         /*
         delay(1000000);

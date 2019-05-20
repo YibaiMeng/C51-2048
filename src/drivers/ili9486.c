@@ -116,8 +116,11 @@ void show_char(unsigned int x, unsigned int y, unsigned int color, unsigned char
     }
 }
 
-void draw_rectangle(unsigned int x_l, unsigned int y_l, unsigned int x_h, unsigned int y_h, unsigned int color) {
+void draw_rectangle(unsigned int x_l, unsigned int y_l, unsigned int width, unsigned int height, unsigned int color) {
     unsigned char i, j;
+    unsigned int x_h, y_h;
+    x_h = x_l + width - 1;
+    y_h = y_l + height - 1;
     cmd = 0x2A; // set column address
     mydata = (x_l >> 8) & 1;
     mydata = (x_l & 0xFF);
@@ -140,10 +143,13 @@ void draw_rectangle(unsigned int x_l, unsigned int y_l, unsigned int x_h, unsign
 /*
     It is YOUR responsibility to make sure that x_l - x_h and y_l - y_h are of the appropriate length! It is non-trival to check these information from img!
 */
-void draw_image(unsigned int x_l, unsigned int y_l, unsigned int x_h, unsigned int y_h, img_type img, color_type plus_color, color_type minus_color) {
+void draw_image(unsigned int x_l, unsigned int y_l, unsigned int width, unsigned int height, img_type img, color_type plus_color, color_type minus_color) {
     int8_t len; // Note the type, same as img_type. 
     long long int cnt; // Must be long enough to prevent overflow. 
     color_type color;
+    unsigned int x_h, y_h;
+    x_h = x_l + width - 1;
+    y_h = y_l + height - 1;
     cmd = 0x2A; // set column address
     mydata = (x_l >> 8) & 1;
     mydata = (x_l & 0xFF);
