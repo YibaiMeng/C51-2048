@@ -4,7 +4,7 @@ HEADERS = $(wildcard include/*.h)
 CC = sdcc
 FLASHER = ec2writeflash
 OUT_NAME = main
-CC_FLAGS = --Werror -mmcs51 -L/usr/local/share/sdcc/lib/small --model-small -I./include/
+CC_FLAGS = --Werror -mmcs51 -L/usr/local/share/sdcc/lib/medium --model-medium -I./include/
 
 build/${OUT_NAME}.ihx : ${SOURCES} ${HEADERS}
 	mkdir -p build/
