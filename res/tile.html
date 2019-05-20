@@ -1,0 +1,105 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+
+body {
+background: #000000;
+
+}
+
+/*background for no tiles   */
+.tile {
+    text-align: center;
+    font-weight: bold;
+    font-size: 35px;
+    font-family:"Clear Sans", "Helvetica Neue", Arial, sans-serif;
+    width:71px; /*orginal 107*/
+    height: 71px;
+    line-height: 71px;
+    color:#776e65;
+    background: #CFC0B3;
+    margin:20px;
+}
+
+#bd {
+    background:#BCAC9E;
+}
+
+#t2 {
+    color : #776e65;
+    background: #eee4da;
+}
+#t4 {
+    background : #ede0c8;
+    color:#776e65;
+}
+#t8 {
+    background : #f2b179;
+    color:#f9f6f2;
+}
+#t16 {
+    background : #f59563;
+    color:#f9f6f2;
+}
+#t32 {
+    background : #f67c5f;
+    color: #f9f6f2;
+}
+#t64 {
+    background : #f65e3b;
+    color:#f9f6f2;
+}
+/*
+25 when small
+*/
+#t128 {
+    background : #edcf72;
+    font-size : 25px; 
+    color: #f9f6f2;
+}
+#t256 {
+    background : #edcc61;
+    font-size : 25px;
+    color:#f9f6f2;
+}
+#t512 {
+    background : #edc850;
+    font-size : 25px;
+    color:#f9f6f2;
+}
+
+/*
+15 when small
+*/
+#t1024 {
+    background : #edc53f;
+    font-size : 25px;
+    color:#f9f6f2;
+}
+#t2048 {
+    background : #edc22e;
+    font-size : 25px;
+    color:#f9f6f2;
+}
+
+</style>
+</head>
+<body>
+    <div class="tile" ></div>
+    <div class="tile" id="bd"></div>
+    <div class="tile" id="t2">2</div>
+    <div class="tile" id="t4">4</div>
+    <div class="tile" id="t8">8</div>
+    <div class="tile" id="t16">16</div>
+    <div class="tile" id="t32">32</div>
+    <div class="tile" id="t64">64</div>
+    <div class="tile" id="t128">128</div>
+    <div class="tile" id="t256">256</div>
+    <div class="tile" id="t512">512</div>
+    <div class="tile" id="t1024">1024</div>
+    <div class="tile" id="t2048">2048</div>
+</body>
+</html>
