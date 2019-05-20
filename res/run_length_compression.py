@@ -49,7 +49,7 @@ def run_length_compression(im):
                 print("};")
 for i in range(1, 11 + 1, 1):
     im = Image.open("cvt/"+str(int(2 ** i)) + ".pbm")
-    print("const __code int8_t img_"+str(int(2 ** i))+" = ", end="")
+    print("const __code int8_t img_"+str(int(2 ** i))+" [] = ", end="")
     run_length_compression(im)
  
 
