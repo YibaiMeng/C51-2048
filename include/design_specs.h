@@ -6,8 +6,8 @@
 #define SCREEN_WIDTH 320
 #define SCREEN_HEIGHT 480
 
-#define BACKGROUND_COLOR_EMPTY 0xcfc0b3
-#define MARGIN_COLOR 0xbcac9e
+#define BACKGROUND_COLOR_EMPTY 0xce16 // RGB: 0xcfc0b3
+#define MARGIN_COLOR 0xbd73 //RGB :0xbcac9e
 
 // 24bit RGB codes for color of the fonts and background of the different tiles.
 // The codes are in the order of R,G and B. 
