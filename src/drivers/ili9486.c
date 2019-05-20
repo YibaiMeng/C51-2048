@@ -1,10 +1,19 @@
-#include <C8051F020.h>
+/*
+    
+
+*/
 #include <stdlib.h>
+
+#include <C8051F020.h>
+
 #include "system.h"
 #include "ili9486.h"
 #include "font.h"
-    
-/* ZHA cryptic comments */
+
+
+/*
+    Initailize the ili9486. TODO: Find out what it means and comment them.
+*/    
 void ili9486_init(void) {
     reset = 1;
     delay(200);
@@ -31,7 +40,7 @@ void ili9486_init(void) {
     cmd = 0x3A;
     mydata = 0x05;
     cmd = 0xB4;
-    mydata = 0x01;//0x00
+    mydata = 0x01; // 0x00
     cmd = 0xB6;
     mydata = 0x02;
     mydata = 0x22;
@@ -39,7 +48,7 @@ void ili9486_init(void) {
     mydata = 0x41;
     cmd = 0xC5;
     mydata = 0x00;
-    mydata = 0x07;//0x18
+    mydata = 0x07; // 0x18
     cmd = 0xE0;
     mydata = 0x0F;
     mydata = 0x1F;
@@ -79,7 +88,7 @@ void ili9486_init(void) {
 
 void dis_color(unsigned int c) {
     int i, j;
-    cmd = 0x2C; // start write
+    cmd = 0x2C; // Start write
     for (i = 0; i < 480; ++i)
         for (j = 0; j < 320; ++j) {
             mydata = c >> 8;
@@ -116,23 +125,23 @@ void show_char(unsigned int x, unsigned int y, unsigned int color, unsigned char
     }
 }
 
-void draw_rectangle(unsigned int x_l, unsigned int y_l, unsigned int x_h, unsigned int y_h, unsigned int color) {
+void draw_rectangle(unsigned int x_l, unsigned int y_l, unsigned int width, unsigned int height, unsigned int color) {
     unsigned char i, j;
-    x_h = x_l + x_h - 1;
-    y_h = y_l + y_h - 1;
-    cmd = 0x2A; // set column address
+    //x_h = x_l + x_h - 1;
+    //y_h = y_l + y_h - 1;
+    cmd = 0x2A; // Set column address
     mydata = (x_l >> 8) & 1;
     mydata = (x_l & 0xFF);
-    mydata = (x_h >> 8) & 1;
-    mydata = x_h & 0xFF;
-    cmd = 0x2B; // set page address
+    mydata = ((x_l + width - 1) >> 8) & 1;
+    mydata = (x_l + width - 1) & 0xFF;
+    cmd = 0x2B; // Set page address
     mydata = (y_l >> 8) & 1;
     mydata = (y_l & 0xFF);
-    mydata = (y_h >> 8) & 1;
-    mydata = y_h & 0xFF;
-    cmd = 0x2C; // 开始写？
-    for (i = 0; i < y_h - y_l + 1; ++i) {
-        for (j = 0; j < x_h - x_l + 1; ++j) {
+    mydata = ((y_l + height - 1) >> 8) & 1;
+    mydata = (y_l + height - 1) & 0xFF;
+    cmd = 0x2C; // Start writing. left to right, then top to bottom.
+    for (i = 0; i < height; ++i) {
+        for (j = 0; j < width; ++j) {
             mydata = color >> 8;
             mydata = color & 0xFF;
         }
@@ -140,26 +149,36 @@ void draw_rectangle(unsigned int x_l, unsigned int y_l, unsigned int x_h, unsign
 }
 
 /*
-    It is YOUR responsibility to make sure that x_l - x_h and y_l - y_h are of the appropriate length! It is non-trival to check these information from img!
+    Draw a image encoded with run length compression specified in res/run_length_compression.py
+    
+    Args:
+        x_l, y_l: top-left coordinate of the image. See coordinates in
+        width, height: width and height of the image. TODO: change the name to more readable ones.
+        img: pointer to the image.
+        plus_color: color for the '1's
+        minus_color: color for the '0's 
+    
+    Returns:
+        nothing.
 */
-void draw_image(unsigned int x_l, unsigned int y_l, unsigned int x_h, unsigned int y_h, img_type img, color_type plus_color, color_type minus_color) {
+void draw_image(unsigned int x_l, unsigned int y_l, unsigned int width, unsigned int height, img_type img, color_type plus_color, color_type minus_color) {
     int8_t len; // Note the type, same as img_type. 
     long long int cnt; // Must be long enough to prevent overflow. 
-    x_h = x_h + x_l - 1;
-    y_h = y_h + y_l - 1;
+    //x_h = x_h + x_l - 1; 
+    //y_h = y_h + y_l - 1;
     color_type color;
     cmd = 0x2A; // set column address
     mydata = (x_l >> 8) & 1;
     mydata = (x_l & 0xFF);
-    mydata = (x_h >> 8) & 1;
-    mydata = x_h & 0xFF;
+    mydata = ((x_l + width - 1) >> 8) & 1;
+    mydata = (x_l + width - 1) & 0xFF;
     cmd = 0x2B; // set page address
     mydata = (y_l >> 8) & 1;
     mydata = (y_l & 0xFF);
-    mydata = (y_h >> 8) & 1;
-    mydata = y_h & 0xFF;
+    mydata = ((y_l + height - 1) >> 8) & 1;
+    mydata = (y_l + height - 1) & 0xFF;
     cmd = 0x2C; // 开始写？
-    cnt = (y_h - y_l + 1) * (x_h - x_l + 1);
+    cnt = width * height;
     while (cnt > 0) {
         len = *img;
         if (len < 0) {

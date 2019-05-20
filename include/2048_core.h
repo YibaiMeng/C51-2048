@@ -10,7 +10,7 @@
 typedef __pdata uint8_t board_type[BOARD_SIZE * BOARD_SIZE]; 
 
 extern board_type board; 
-__pdata uint32_t score = 0;
+extern __pdata uint32_t score;
 
 enum move {
     LEFT,

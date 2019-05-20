@@ -6,9 +6,10 @@
 #define SCREEN_WIDTH 320
 #define SCREEN_HEIGHT 480
 
-#define BACKGROUND_COLOR_EMPTY 0xcfc0b3
-#define MARGIN_COLOR 0xbcac9e
+#define BACKGROUND_COLOR_EMPTY 0xce16 // RGB: 0xcfc0b3
+#define MARGIN_COLOR 0xbd73 //RGB :0xbcac9e
 
+// TODO: change them into 16bit
 // 24bit RGB codes for color of the fonts and background of the different tiles.
 // The codes are in the order of R,G and B. 
 // For example, to get the G componet of the background_color of the tile 512, just access the 3 * log2(512/2) + 2 th element of background_colors. 
