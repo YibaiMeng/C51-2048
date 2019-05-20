@@ -6,7 +6,7 @@
 #define SCREEN_WIDTH 320
 #define SCREEN_HEIGHT 480
 
-typedef uint8_t* img_type;
+typedef __code const int8_t* img_type;
 typedef uint16_t color_type;
 
 unsigned char __xdata  __at (0x8003) reset;

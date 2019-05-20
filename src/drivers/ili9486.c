@@ -8,6 +8,8 @@
 void ili9486_init(void) {
     reset = 1;
     delay(200);
+    reset = 0;
+    delay(200);
     cmd = 0xF2;
     mydata = 0x18;
     mydata = 0xA3;
@@ -119,16 +121,16 @@ void draw_rectangle(unsigned int x_l, unsigned int y_l, unsigned int x_h, unsign
     cmd = 0x2A; // set column address
     mydata = (x_l >> 8) & 1;
     mydata = (x_l & 0xFF);
-    mydata = ((x_h-1) >> 8) & 1;
-    mydata = (x_h-1) & 0xFF;
+    mydata = (x_h >> 8) & 1;
+    mydata = x_h & 0xFF;
     cmd = 0x2B; // set page address
     mydata = (y_l >> 8) & 1;
     mydata = (y_l & 0xFF);
-    mydata = ((y_h-1) >> 8) & 1;
-    mydata = (y_h-1) & 0xFF;
+    mydata = (y_h >> 8) & 1;
+    mydata = y_h & 0xFF;
     cmd = 0x2C; // 开始写？
-    for (i = 0; i < y_h - y_l; ++i) {
-        for (j = 0; j < x_h - x_l; ++j) {
+    for (i = 0; i < y_h - y_l + 1; ++i) {
+        for (j = 0; j < x_h - x_l + 1; ++j) {
             mydata = color >> 8;
             mydata = color & 0xFF;
         }
@@ -145,15 +147,15 @@ void draw_image(unsigned int x_l, unsigned int y_l, unsigned int x_h, unsigned i
     cmd = 0x2A; // set column address
     mydata = (x_l >> 8) & 1;
     mydata = (x_l & 0xFF);
-    mydata = ((x_h-1) >> 8) & 1;
-    mydata = (x_h-1) & 0xFF;
+    mydata = (x_h >> 8) & 1;
+    mydata = x_h & 0xFF;
     cmd = 0x2B; // set page address
     mydata = (y_l >> 8) & 1;
     mydata = (y_l & 0xFF);
-    mydata = ((y_h-1) >> 8) & 1;
-    mydata = (y_h-1) & 0xFF;
+    mydata = (y_h >> 8) & 1;
+    mydata = y_h & 0xFF;
     cmd = 0x2C; // 开始写？
-    cnt = (y_h - y_l) * (x_h - x_l);
+    cnt = (y_h - y_l + 1) * (x_h - x_l + 1);
     while (cnt > 0) {
         len = *img;
         if (len < 0) {
@@ -167,7 +169,7 @@ void draw_image(unsigned int x_l, unsigned int y_l, unsigned int x_h, unsigned i
             continue;
         }
         len = abs(len);
-        while(len > 0 && cnt > 1) {
+        while(len > 0 && cnt > 0) {
             mydata = color >> 8;
             mydata = color & 0xFF;
             cnt--;
