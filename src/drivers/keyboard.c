@@ -32,12 +32,29 @@ static unsigned char _get_key() {
 
 }
 unsigned char get_key() {
-    static unsigned char prev_key = NO_KEY;
-    unsigned char key_pressed;
-    key_pressed = _get_key();
-    if (key_pressed != NO_KEY && key_pressed != prev_key) {
-        prev_key = key_pressed;
-        return key_pressed;
+    //static unsigned char prev_key = NO_KEY;
+    unsigned char key_pressed = NO_KEY;
+    
+    while (key_pressed == NO_KEY) {
+        key_pressed = _get_key();
+        /*
+        if (key_pressed != NO_KEY) {
+            prev_key = key_pressed;
+            for(i = 0; i<= 100; i++) {
+                delay(1000);
+            }
+            key_pressed = _get_key();
+            if(key_pressed == prev_key) {
+                
+            }
+        }
+        
+        
+         && key_pressed != prev_key) {
+            prev_key = key_pressed;
+            return key_pressed;
+    	}*/
+	    delay(1000);
     }
-    return NO_KEY;
+    return key_pressed;
 }
