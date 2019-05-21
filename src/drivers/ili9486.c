@@ -117,8 +117,9 @@ void show_char(unsigned int x, unsigned int y, unsigned int color, unsigned char
 }
 
 void draw_rectangle(unsigned int x_l, unsigned int y_l, unsigned int width, unsigned int height, unsigned int color) {
-    unsigned char i, j;
+    //unsigned char i, j;
     unsigned int x_h, y_h;
+    long long int cnt;
     x_h = x_l + width - 1;
     y_h = y_l + height - 1;
     cmd = 0x2A; // set column address
@@ -132,11 +133,14 @@ void draw_rectangle(unsigned int x_l, unsigned int y_l, unsigned int width, unsi
     mydata = (y_h >> 8) & 1;
     mydata = y_h & 0xFF;
     cmd = 0x2C; // 开始写？
-    for (i = 0; i < y_h - y_l + 1; ++i) {
-        for (j = 0; j < x_h - x_l + 1; ++j) {
-            mydata = color >> 8;
-            mydata = color & 0xFF;
-        }
+    cnt = (y_h - y_l + 1) * (x_h - x_l + 1);
+    /*
+        TODO: find out why a for loop would not work for certain values of width and height.
+    */
+    while (cnt > 0) {
+        mydata = color >> 8;
+        mydata = color & 0xFF;
+        cnt--;
     }
 }
 

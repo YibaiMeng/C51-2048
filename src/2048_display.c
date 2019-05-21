@@ -18,14 +18,15 @@
 void draw_board_outline() {
     // int i;
     // Draw board background
-    draw_rectangle(0, 80, 320, 320, BACKGROUND_COLOR_EMPTY);
+    //draw_rectangle(0, 80, 320, 320, BACKGROUND_COLOR_EMPTY);
     // Draw margins
-    draw_rectangle(71, 0, 12, 320, MARGIN_COLOR);
-    draw_rectangle(71+12+71, 0, 12, 320, MARGIN_COLOR);
-    draw_rectangle(71+12+71+12+71, 0, 12, 320, MARGIN_COLOR);
-    draw_rectangle(320, 80+71, 320, 12, MARGIN_COLOR);
-    draw_rectangle(320, 80+71+12+71, 320, 12, MARGIN_COLOR);
-    draw_rectangle(320, 80+71+12+71+12+71, 320, 12, MARGIN_COLOR);
+    draw_rectangle(71, 80, 12, 320, MARGIN_COLOR);
+    draw_rectangle(71+12+71, 80, 12, 320, MARGIN_COLOR);
+    draw_rectangle(71+12+71+12+71, 80, 12, 320, MARGIN_COLOR);
+    draw_rectangle(0, 80+71, 320, 12, MARGIN_COLOR);
+    draw_rectangle(0, 80+71+12+71, 320, 12, MARGIN_COLOR);
+    draw_rectangle(0, 80+71+12+71+12+71, 320, 12, MARGIN_COLOR);
+    printf("Finished drawing!\n");
 }
 
 
@@ -39,6 +40,13 @@ void draw_board_outline() {
 void draw_tile(uint8_t tile_id, uint8_t tile_content) {
     
     img_type img = NULL;
+    if (tile_content == 0) {
+        draw_rectangle((tile_id % 4) * (TILE_SIZE + MARGIN_SIZE) + START_X, (tile_id / 4) * (TILE_SIZE + MARGIN_SIZE) + START_Y, TILE_SIZE, TILE_SIZE, BACKGROUND_COLOR_EMPTY);
+        printf("No tile!\n");
+        return;
+    }
+    
+    
     /*
         color_type color_background = background_colors[tile_content - 1];
         color_type color_font = font_colors[tile_content - 1];
@@ -46,7 +54,7 @@ void draw_tile(uint8_t tile_id, uint8_t tile_content) {
         uint8_t y = tile_id / 4 * (TILE_SIZE + MARGIN_SIZE) + Y_START
     */ 
     // This is because the size of each tile is NOT the same, so it's diffcult to store them into a single array. If I do that, them I would need to store a list of their starting points, which would subject to change every time I update the images.
-    switch(tile_content) {
+    switch(tile_content) {        
         case 1 : {
             img = tile_2;
             break;
@@ -92,6 +100,7 @@ void draw_tile(uint8_t tile_id, uint8_t tile_content) {
             break;
         };
         default : {
+            printf("wtf! This shouldn't have happened!\n");
             // This should never be executed!
             break;
         };        
@@ -110,10 +119,12 @@ void draw_board(board_type board) {
         is_init = 1;
     }
     for(i = 0; i < BOARD_SIZE * BOARD_SIZE; i++) {
+        draw_tile(i, board[i]);
+        /*
         if (board[i] != board_backup[i]) {
             draw_tile(i, board[i]);
             board_backup[i] = board[i];
-        }
+        }*/
     }   
 }
 

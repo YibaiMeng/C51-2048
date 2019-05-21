@@ -10,7 +10,7 @@
 
 #include "2048_core.h"
 
-__pdata uint32_t score = 0;
+__xdata uint32_t score = 0;
 /*
  * Function: concatenate
  * 
@@ -176,16 +176,25 @@ bool move_tile(board_type board, enum move mv)
 void add_random_tile(board_type board) {
     static bool init = 0;
     int r, value;
-    if (!init) {
+    if (init == 0) {
+        printf("Setting up seed!\n");
         srand(SEED); // TODO 有个时钟
+        printf("Seed set");
         init = 1;
     }
+    printf("getting random value\n");
     r = rand();
+    printf("r is %i\n", r);
+    printf("board is %i\n", board[r % (BOARD_SIZE * BOARD_SIZE)]);
     value =  r < 0.9 * RAND_MAX ? 1 : 2;
-    while(board[r % (BOARD_SIZE * BOARD_SIZE)] != 0) {
+    while(board[r % 16] != 0) {
         r = rand();
+        //printf("r is %i\n", r);
+        //printf("board is %i\n", board[r % (BOARD_SIZE * BOARD_SIZE)]);
     }
-    board[r % (BOARD_SIZE * BOARD_SIZE)] = value; 
+    printf("Finally! r is %i\n", r);
+    board[r % 16] = value; 
+    printf("board is %i\n", board[r % (BOARD_SIZE * BOARD_SIZE)]);
 }
 
 /*
@@ -217,8 +226,12 @@ void init_game(board_type board) {
     for(i=0; i < BOARD_SIZE * BOARD_SIZE; i++) {
         board[i] = 0;
     }
+    printf("Settting score!\n");
     score = 0;
+    printf("Adding random tile!\n");
     add_random_tile(board);
+    add_random_tile(board);
+    printf("Tile added!\n");
 }
 
 
