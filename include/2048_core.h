@@ -7,11 +7,16 @@
 #define BOARD_SIZE 4
 #define SEED 0x18da // TODO: Until i find a better way of initing the random seed. Turn on the ADC?
 
+#ifdef __SDCC
 // TODO: why __pdata would not work.
 typedef __xdata uint8_t board_type[BOARD_SIZE * BOARD_SIZE]; 
-
-extern board_type board; 
 extern __xdata uint32_t score;
+#else
+typedef uint8_t board_type[BOARD_SIZE * BOARD_SIZE]; 
+extern  uint32_t score;
+#endif
+extern board_type board; 
+
 
 enum move {
     LEFT,

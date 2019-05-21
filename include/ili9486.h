@@ -9,9 +9,9 @@
 typedef __code const int8_t* img_type;
 typedef uint16_t color_type;
 
-unsigned char __xdata  __at (0x8003) reset;
-unsigned char __xdata  __at (0x8002) cmd; //
-unsigned char __xdata  __at (0x9002) mydata; // Write data to WDR
+__xdata volatile unsigned char   __at (0x8003) reset;
+__xdata volatile unsigned char   __at (0x8002) cmd; //
+__xdata volatile unsigned char   __at (0x9002) mydata; // Write data to WDR
 
 void ili9486_init();
 void dis_color(unsigned int c);

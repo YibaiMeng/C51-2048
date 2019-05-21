@@ -10,7 +10,18 @@
 
 #include "2048_core.h"
 
+#ifndef __SDCC
+#include <ncurses.h>
+int row2 = 30;
+#define DEBUG(...)  //mvprintw(row2++, 30, __VA_ARGS__); 
+#else 
+#define DEBUG(...)  printf(__VA_ARGS__)
+#endif
+#ifdef __SDCC
 __xdata uint32_t score = 0;
+#else
+uint32_t score = 0;
+#endif
 /*
  * Function: concatenate
  * 
@@ -26,7 +37,7 @@ __xdata uint32_t score = 0;
  *  returns: Whether anything changed
  */
 static bool concate(board_type board, uint8_t* f, bool check_only) {
-	static int temp[BOARD_SIZE];
+	uint8_t temp[BOARD_SIZE]; // make tmp and board the same type
 	int i, j;
 	bool ret;
 	for(i = 0; i < BOARD_SIZE; i++) {
@@ -44,7 +55,7 @@ static bool concate(board_type board, uint8_t* f, bool check_only) {
 	for(i = 0; i < j - 1;) {
 	    if(temp[i] == temp[i + 1] && temp[i] != 0) {
 	        temp[i] += 1;
-	        if(!check_only) {
+	        if(check_only == 0) {
 	            score += 1 << temp[i]; // For each successful merge, points worth the value of the merged tile is added. I did not consult the src of the original！ I made up the rules myself.
             }
 		    for(int k = i + 1; k < j - 1; k++) {
@@ -55,12 +66,18 @@ static bool concate(board_type board, uint8_t* f, bool check_only) {
 	    }
 	    i++;
 	}
-        
+    DEBUG("Temp array is: ");
+    for(i = 0; i < BOARD_SIZE; i++) {
+        DEBUG("%i ", temp[i]);
+    }  
+    DEBUG("\n");
 	ret = false;
 	for(i = 0; i < BOARD_SIZE; i++) {
         if(board[f[i]] != temp[i])
             ret = true;
-        if(!check_only) {
+        if(check_only == 0) {
+            DEBUG("Swapping!\n");
+            DEBUG("Index is %i\n",f[i]);
             board[f[i]] = temp[i];
         }
     }
@@ -105,7 +122,7 @@ static bool concate(board_type board, uint8_t* f, bool check_only) {
     }
  */  
 static uint8_t* get_func(enum move mv, uint8_t row_num) { 
-    static uint8_t lookup_table[][BOARD_SIZE][BOARD_SIZE] = {{
+    static __code uint8_t lookup_table[][BOARD_SIZE][BOARD_SIZE] = {{
             {0,1,2,3},
             {4,5,6,7},
             {8,9,10,11},
@@ -148,10 +165,21 @@ bool move_tile(board_type board, enum move mv)
 {
     int i;
     bool ret = false;
+    DEBUG("[move_tile]: Start moving tiles!\n");
+    DEBUG("[move_tile]: Before moving, the board is: ");
+    for(i = 0; i < BOARD_SIZE * BOARD_SIZE; i++) {
+        DEBUG("%i ", board[i]);
+    }
     for(i = 0; i < BOARD_SIZE; i++) {
+        DEBUG("MOVE NUMBER IS %i\ns", mv);
         if(concate(board, get_func(mv, i), false) == true)
             ret = true;
     }
+    DEBUG("[move_tile]: Now the board is: ");
+    for(i = 0; i < BOARD_SIZE * BOARD_SIZE; i++) {
+        DEBUG("%i ", board[i]);
+    }
+    DEBUG("\n");
     return ret;    
 }
 
@@ -177,24 +205,24 @@ void add_random_tile(board_type board) {
     static bool init = 0;
     int r, value;
     if (init == 0) {
-        printf("Setting up seed!\n");
+        DEBUG("[add_random_tile] Setting up seed!\n");
         srand(SEED); // TODO 有个时钟
-        printf("Seed set");
+        DEBUG("[add_random_tile] Seed set.\n");
         init = 1;
     }
-    printf("getting random value\n");
+    DEBUG("[add_random_tile] Getting random value\n");
     r = rand();
-    printf("r is %i\n", r);
-    printf("board is %i\n", board[r % (BOARD_SIZE * BOARD_SIZE)]);
+    DEBUG("[add_random_tile] Random value is %i.\n", r);
+    DEBUG("[add_random_tile] Value of board at such point is %i\n", board[r % (BOARD_SIZE * BOARD_SIZE)]);
     value =  r < 0.9 * RAND_MAX ? 1 : 2;
     while(board[r % 16] != 0) {
         r = rand();
         //printf("r is %i\n", r);
         //printf("board is %i\n", board[r % (BOARD_SIZE * BOARD_SIZE)]);
     }
-    printf("Finally! r is %i\n", r);
+    DEBUG("[add_random_tile] Finally a valid place to place the new tile. id of tile is %i\n", r);
     board[r % 16] = value; 
-    printf("board is %i\n", board[r % (BOARD_SIZE * BOARD_SIZE)]);
+    DEBUG("[add_random_tile] Value of the tile is %i \n", value);
 }
 
 /*

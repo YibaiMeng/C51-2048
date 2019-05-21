@@ -6,6 +6,9 @@
 #include "2048_core.h"
 #include "keyboard.h"
 board_type board;
+
+
+#define DEBUG printf
 void main(void) {
     //int i;
     char key;

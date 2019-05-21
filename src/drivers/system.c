@@ -12,11 +12,14 @@ void system_init() {
     xram_init();
     port_init();
     uart0_init();
+    
+    
+    TI0 = 1;
     // TODO: Add all the other inits, controlled by marcos
 }
 
 void port_init() {
-    XBR0 = 0x04;     // 使能uart0
+    XBR0 = 0x04;  // 使能uart0
     XBR2 = 0x42; // 使用 P0-P3 作为总线，允许XBR，允许使用外部存储作为独占模式，P0.7 (/WR) 和 P0.6（/RD）被crossbar跳过了. 
     P0MDOUT = 0xC1; // 设置总线相关端口为推挽输出 P0.6 和 P0.7, TX推挽输出
     P1MDOUT = 0xFF; // 推挽
@@ -42,7 +45,7 @@ void uart0_init() {
     TMOD = 0x20;  // Timer 1 as baudrate generator
     TH1 = -(SYSCLK/BAUDRATE/16/12); // T1M set to 0; SMOD0 set to 1  
     PCON |= 0x80; // Set SMOD0 to 1
-    TR1 = 1; // Start timer1
+    TR1 = 1; // Start timer1    
 }
 
 /*
