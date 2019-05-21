@@ -126,25 +126,29 @@ void show_char(unsigned int x, unsigned int y, unsigned int color, unsigned char
 }
 
 void draw_rectangle(unsigned int x_l, unsigned int y_l, unsigned int width, unsigned int height, unsigned int color) {
-    unsigned char i, j;
-    //x_h = x_l + x_h - 1;
-    //y_h = y_l + y_h - 1;
-    cmd = 0x2A; // Set column address
+    unsigned int x_h, y_h;
+    long long int cnt;
+    x_h = x_l + width - 1;
+    y_h = y_l + height - 1;
+    cmd = 0x2A; // set column address
     mydata = (x_l >> 8) & 1;
     mydata = (x_l & 0xFF);
-    mydata = ((x_l + width - 1) >> 8) & 1;
-    mydata = (x_l + width - 1) & 0xFF;
+    mydata = (x_h >> 8) & 1;
+    mydata = x_h & 0xFF;
     cmd = 0x2B; // Set page address
     mydata = (y_l >> 8) & 1;
     mydata = (y_l & 0xFF);
-    mydata = ((y_l + height - 1) >> 8) & 1;
-    mydata = (y_l + height - 1) & 0xFF;
-    cmd = 0x2C; // Start writing. left to right, then top to bottom.
-    for (i = 0; i < height; ++i) {
-        for (j = 0; j < width; ++j) {
-            mydata = color >> 8;
-            mydata = color & 0xFF;
-        }
+    mydata = (y_h >> 8) & 1;
+    mydata = y_h & 0xFF;
+    cmd = 0x2C; // 开始写？
+    cnt = (y_h - y_l + 1) * (x_h - x_l + 1);
+    /*
+        TODO: find out why a for loop would not work for certain values of width and height.
+    */
+    while (cnt > 0) {
+        mydata = color >> 8;
+        mydata = color & 0xFF;
+        cnt--;
     }
 }
 
@@ -167,6 +171,9 @@ void draw_image(unsigned int x_l, unsigned int y_l, unsigned int width, unsigned
     //x_h = x_h + x_l - 1; 
     //y_h = y_h + y_l - 1;
     color_type color;
+    unsigned int x_h, y_h;
+    x_h = x_l + width - 1;
+    y_h = y_l + height - 1;
     cmd = 0x2A; // set column address
     mydata = (x_l >> 8) & 1;
     mydata = (x_l & 0xFF);

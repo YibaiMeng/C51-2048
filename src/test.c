@@ -1,23 +1,71 @@
 #include <C8051F020.h>
-
+#include <stdio.h>
 #include "system.h"
 #include "ili9486.h"
-
-//#include "2048_core.h"
-//#include "2048_display.h"
-const __code int8_t img_1024[] = {-71,0,-71,0,-71,0,-71,0,-71,0,-71,0,-71,0,-71,0,-71,0,-71,0,-71,0,-71,0,-71,0,-71,0,-71,0,-71,0,-71,0,-71,0,-71,0,-71,0,-71,0,-71,0,-71,0,-71,0,-71,0,-71,0,-14,4,-6,8,-6,8,-10,5,-10,0,-13,5,-5,10,-4,11,-8,5,-10,0,-12,6,-5,11,-2,12,-7,6,-10,0,-10,8,-4,6,-1,5,-2,6,-1,6,-5,7,-10,0,-9,9,-4,5,-2,5,-2,5,-3,5,-4,8,-10,0,-9,9,-4,5,-2,6,-1,5,-3,5,-4,8,-10,0,-9,9,-4,5,-3,5,-8,6,-3,9,-10,0,-9,3,-1,5,-4,5,-3,5,-8,5,-3,10,-10,0,-13,5,-4,5,-3,5,-7,6,-3,10,-10,0,-13,5,-4,5,-3,5,-6,6,-3,5,-1,5,-10,0,-13,5,-4,5,-3,5,-5,6,-3,5,-2,5,-10,0,-13,5,-4,5,-2,6,-4,6,-4,14,-8,0,-13,5,-4,5,-2,6,-3,6,-5,14,-8,0,-13,5,-4,5,-2,5,-3,6,-6,14,-8,0,-13,5,-4,6,-1,5,-2,13,-7,5,-10,0,-13,5,-5,11,-2,13,-7,5,-10,0,-13,5,-5,10,-2,14,-7,5,-10,0,-13,5,-7,7,-3,14,-7,5,-10,0,-71,0,-71,0,-71,0,-71,0,-71,0,-71,0,-71,0,-71,0,-71,0,-71,0,-71,0,-71,0,-71,0,-71,0,-71,0,-71,0,-71,0,-71,0,-71,0,-71,0,-71,0,-71,0,-71,0,-71,0,-71,0,-71,0,-71,0};
-
-int main(void) {
+#include "2048_display.h"
+#include "2048_core.h"
+#include "keyboard.h"
+board_type board;
+void main(void) {
+    //int i;
+    char key;
+    bool is_success;
     system_init();
     ili9486_init();
     dis_color(0xFF00);
-    
-    //draw_board_outline();
-    
-    draw_rectangle(0, 0, 50, 50, 0x00FF);
-    draw_rectangle(40, 40, 50, 50, 0x0FFF);
-    //draw_image(50, 50, 71, 71, img_1024, 0x0FF0, 0x0000);
-    //draw_image(80, 80, 71, 71, img_1024, 0x0FF0, 0x0000);
-    while (1) {
+    draw_board_outline();
+    delay(200);
+    init_game(board);
+    delay(200);
+    draw_board(board);
+    delay(200);
+    while(1) {
+        if (game_ended(board)) {
+            printf("Game Over\n");
+            break;
+        }
+        key = get_key();
+        printf("Moved %c\n", key);
+        switch(key) {
+            case '1' : {
+                is_success = move_tile(board, LEFT);
+                break;
+            };
+            case '2' : {
+                is_success = move_tile(board, RIGHT);            
+                break;
+            };
+            case '3' : {
+                is_success = move_tile(board, UP);            
+                break;
+            };     
+            case '4' : {
+                is_success = move_tile(board, DOWN);            
+                break;
+            };
+            
+            case '5' : {
+                init_game(board);
+                draw_board(board);
+                continue;
+            }
+            default : {
+                continue;
+            }            
+        }
+        
+        if(is_success) {
+            printf("Move success!\n");
+            add_random_tile(board);
+        }
+        else {
+           printf("Move not a success!\n");
+           continue;
+        }
+        draw_board(board);
+        //show_score();
+        delay(10000);
+    }
+    while (1) { 
     } 
 }
