@@ -10,7 +10,6 @@ board_type board;
 
 #define DEBUG printf
 void main(void) {
-    //int i;
     char key;
     bool is_success;
     system_init();
@@ -24,45 +23,51 @@ void main(void) {
     delay(200);
     while(1) {
         if (game_ended(board)) {
-            printf("Game Over\n");
+            printf("[game.c] Game Over\n");
             break;
         }
         key = get_key();
-        printf("Moved %c\n", key);
+        printf("[game.c] Key pressed is %c\n", key);
         switch(key) {
-            case '1' : {
-                is_success = move_tile(board, LEFT);
+            case '5' : {
+                printf("[game.c] Command:  Move left!\n");
+                is_success = move_tile(board, GAME_MOVE_LEFT);
+                break;
+            };
+            case '7' : {
+                printf("[game.c] Command:  Move right!\n");
+                is_success = move_tile(board, GAME_MOVE_RIGHT);            
                 break;
             };
             case '2' : {
-                is_success = move_tile(board, RIGHT);            
-                break;
-            };
-            case '3' : {
-                is_success = move_tile(board, UP);            
+                printf("[game.c] Command:  Move up!\n");
+                is_success = move_tile(board, GAME_MOVE_UP);            
                 break;
             };     
-            case '4' : {
-                is_success = move_tile(board, DOWN);            
+            case '0' : {
+                is_success = move_tile(board, GAME_MOVE_DOWN); 
+                printf("[game.c] Command:  Move down!\n");           
                 break;
             };
             
-            case '5' : {
+            case 'F' : {
+                printf("[game.c] Command:  Reset game!\n");           
                 init_game(board);
                 draw_board(board);
                 continue;
             }
             default : {
+                printf("[game.c] Invalid Command!\n");
                 continue;
             }            
         }
         
         if(is_success) {
-            printf("Move success!\n");
+            printf("[game.c] Move successful!\n");
             add_random_tile(board);
         }
         else {
-           printf("Move not a success!\n");
+           printf("[game.c] Move not successful!\n");
            continue;
         }
         draw_board(board);

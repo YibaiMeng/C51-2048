@@ -1,0 +1,12 @@
+
+
+void dac_init() {
+    REF0CN = 0x03; // 允许内部参考电压并输出
+    DAC0CN = 0x97; // 允许 DAC0，数据左对齐
+}
+
+
+
+void dac_timer_init() {
+
+}

@@ -17,17 +17,14 @@ extern  uint32_t score;
 #endif
 extern board_type board; 
 
-
-enum move {
-    LEFT,
-    RIGHT,
-    UP,
-    DOWN
-};
+#define GAME_MOVE_LEFT 0
+#define GAME_MOVE_RIGHT 1
+#define GAME_MOVE_UP 2 
+#define GAME_MOVE_DOWN 3
 
 void init_game(board_type);
 void add_random_tile(board_type);
-bool move_tile(board_type, enum move mv);
+bool move_tile(board_type, uint8_t);
 bool game_ended(board_type);
 
 #endif

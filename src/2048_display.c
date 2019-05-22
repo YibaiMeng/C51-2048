@@ -26,7 +26,7 @@ void draw_board_outline() {
     draw_rectangle(0, 80+71, 320, 12, MARGIN_COLOR);
     draw_rectangle(0, 80+71+12+71, 320, 12, MARGIN_COLOR);
     draw_rectangle(0, 80+71+12+71+12+71, 320, 12, MARGIN_COLOR);
-    printf("Finished drawing!\n");
+    printf("[draw_board_outline] Finished drawing!\n");
 }
 
 
@@ -42,7 +42,7 @@ void draw_tile(uint8_t tile_id, uint8_t tile_content) {
     img_type img = NULL;
     if (tile_content == 0) {
         draw_rectangle((tile_id % 4) * (TILE_SIZE + MARGIN_SIZE) + START_X, (tile_id / 4) * (TILE_SIZE + MARGIN_SIZE) + START_Y, TILE_SIZE, TILE_SIZE, BACKGROUND_COLOR_EMPTY);
-        printf("No tile!\n");
+        printf("[draw_tile] No tile at tile_id %i\n", tile_id);
         return;
     }
     
@@ -100,7 +100,7 @@ void draw_tile(uint8_t tile_id, uint8_t tile_content) {
             break;
         };
         default : {
-            printf("wtf! This shouldn't have happened!\n");
+            printf("[draw_tile] wtf! This shouldn't have happened!\n");
             // This should never be executed!
             break;
         };        

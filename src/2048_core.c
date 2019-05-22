@@ -17,6 +17,7 @@ int row2 = 30;
 #else 
 #define DEBUG(...)  printf(__VA_ARGS__)
 #endif
+
 #ifdef __SDCC
 __xdata uint32_t score = 0;
 #else
@@ -66,18 +67,15 @@ static bool concate(board_type board, uint8_t* f, bool check_only) {
 	    }
 	    i++;
 	}
-    DEBUG("Temp array is: ");
-    for(i = 0; i < BOARD_SIZE; i++) {
-        DEBUG("%i ", temp[i]);
-    }  
-    DEBUG("\n");
+    //DEBUG("Temp array is: ");
+    //DEBUG("\n");
 	ret = false;
 	for(i = 0; i < BOARD_SIZE; i++) {
         if(board[f[i]] != temp[i])
             ret = true;
         if(check_only == 0) {
-            DEBUG("Swapping!\n");
-            DEBUG("Index is %i\n",f[i]);
+            //DEBUG("Swapping!\n");
+            //DEBUG("Index is %i\n",f[i]);
             board[f[i]] = temp[i];
         }
     }
@@ -88,7 +86,7 @@ static bool concate(board_type board, uint8_t* f, bool check_only) {
     Original function is below, optimized as a lookup table
     See lookup_table.c for generation code.
     
-    int* get_func(enum move mv, int row_num) {
+    int* get_func(uint8_t mv, int row_num) {
         First malloc a array of BOARD_SIZE, like int f[BOARD_SIZE];
         switch(mv) {
             case LEFT: {
@@ -121,9 +119,13 @@ static bool concate(board_type board, uint8_t* f, bool check_only) {
     return f;
     }
  */  
-static uint8_t* get_func(enum move mv, uint8_t row_num) { 
+static uint8_t* get_func(uint8_t mv, uint8_t row_num) { 
+    #ifndef __SDCC 
+    static uint8_t lookup_table[][BOARD_SIZE][BOARD_SIZE] = {{
+    #else
     static __code uint8_t lookup_table[][BOARD_SIZE][BOARD_SIZE] = {{
-            {0,1,2,3},
+    #endif
+    	    {0,1,2,3},
             {4,5,6,7},
             {8,9,10,11},
             {12,13,14,15}
@@ -161,21 +163,22 @@ static uint8_t* get_func(enum move mv, uint8_t row_num) {
  * returns: Whether the move is possible/whether anything's changed.
  *
  */
-bool move_tile(board_type board, enum move mv)
+bool move_tile(board_type board, uint8_t mv)
 {
     int i;
     bool ret = false;
+    DEBUG("[move_tile] Move number uint8_t mv is %i\n", mv);
     DEBUG("[move_tile]: Start moving tiles!\n");
     DEBUG("[move_tile]: Before moving, the board is: ");
     for(i = 0; i < BOARD_SIZE * BOARD_SIZE; i++) {
         DEBUG("%i ", board[i]);
     }
+    DEBUG("\n");
     for(i = 0; i < BOARD_SIZE; i++) {
-        DEBUG("MOVE NUMBER IS %i\ns", mv);
         if(concate(board, get_func(mv, i), false) == true)
             ret = true;
     }
-    DEBUG("[move_tile]: Now the board is: ");
+    DEBUG("[move_tile]: After moving, the board is: ");
     for(i = 0; i < BOARD_SIZE * BOARD_SIZE; i++) {
         DEBUG("%i ", board[i]);
     }
@@ -254,12 +257,12 @@ void init_game(board_type board) {
     for(i=0; i < BOARD_SIZE * BOARD_SIZE; i++) {
         board[i] = 0;
     }
-    printf("Settting score!\n");
+    printf("[init_game]: Setting score!\n");
     score = 0;
-    printf("Adding random tile!\n");
+    printf("[init_game]: Adding random tile!\n");
     add_random_tile(board);
     add_random_tile(board);
-    printf("Tile added!\n");
+    printf("[init_game]: Tile added!\n");
 }
 
 
