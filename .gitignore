@@ -1,2 +1,3 @@
 build/
 src/test/2048_test
+*.tmp
