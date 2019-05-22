@@ -22,6 +22,3 @@ flash: build/${OUT_NAME}.ihx
 .PHONY: clean
 clean:
 	rm -rf build/
-	rm -rf *.asm *.cdb *.ihx *.lk *.lst *.map *.mem *.omf *.rel *.rst *.sym
-
-
