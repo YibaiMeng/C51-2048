@@ -17,7 +17,7 @@ build/${OUT_NAME}.ihx : ${SOURCES} ${HEADERS}
 # LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
 .PHONY: flash
 flash: build/${OUT_NAME}.ihx
-	${FLASHER} --port USB --mode JTAG --hex build/${OUT_NAME}.ihx  --run # --eraseall
+	${FLASHER} --port USB --mode JTAG --hex build/${OUT_NAME}.ihx --run # --eraseall
 
 .PHONY: clean
 clean:

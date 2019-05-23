@@ -1,0 +1,4 @@
+Sound downloaded from https://freesound.org/people/junggle/sounds/26777/
+
+
+conversion: ffmpeg -i 26777__junggle__btn402.mp3 -ar 8000 -f u16be -acodec pcm_u16be sound_data.raw

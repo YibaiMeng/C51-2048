@@ -35,10 +35,10 @@ void ili9486_init(void) {
     cmd = 0xF9;
     mydata = 0x00;
     mydata = 0x08;
-    cmd = 0x36;
-    mydata = 0x08;
-    cmd = 0x3A;
-    mydata = 0x05;
+    cmd = 0x36; // MADCTL
+    mydata = 0x08; //0b00001000 MY 0 MX 0 MV 0 ML 0 BGR 1 MH 0  
+    cmd = 0x3A; // COLMOD
+    mydata = 0x05; // 0b00000101 16 bit/pixel
     cmd = 0xB4;
     mydata = 0x01; // 0x00
     cmd = 0xB6;
@@ -49,7 +49,7 @@ void ili9486_init(void) {
     cmd = 0xC5;
     mydata = 0x00;
     mydata = 0x07; // 0x18
-    cmd = 0xE0;
+    cmd = 0xE0; // PGAMCTRL
     mydata = 0x0F;
     mydata = 0x1F;
     mydata = 0x1C;
@@ -65,7 +65,7 @@ void ili9486_init(void) {
     mydata = 0x11;
     mydata = 0x0D;
     mydata = 0x00;
-    cmd = 0xE1;
+    cmd = 0xE1; // NGAMCTRL
     mydata = 0x0F;
     mydata = 0x32;
     mydata = 0x2E;
@@ -81,12 +81,12 @@ void ili9486_init(void) {
     mydata = 0x24;
     mydata = 0x20;
     mydata = 0x00;
-    cmd = 0x11;
+    cmd = 0x11; // SELLP out
     delay(200);
-    cmd = 0x29;
+    cmd = 0x29; // DISON Display ON
 }
 
-void dis_color(unsigned int c) {
+void display_color(unsigned int c) {
     int i, j;
     cmd = 0x2C; // Start write
     for (i = 0; i < 480; ++i)

@@ -14,10 +14,10 @@ void timer_init() {
 
 void system_init() {
     // Disable watchdog
-    IE = 0;
+    EA = 0;
     WDTCN = 0xde;
     WDTCN = 0xad;
-    IE = 1;
+    EA = 1;
     sysclk_init();
     xram_init();
     port_init();
