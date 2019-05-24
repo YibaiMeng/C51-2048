@@ -1,34 +1,32 @@
-# Design Specs
+# C51 2048
 
-Background color for each tile:
+A clone of the game [2048](https://play2048.co/main.css) on a C8051F020 MCU, using Peking University's custom development board.
 
-- 2 eee4da
-- 4 ede0c8
-- 8 f2b179
-- 16 f59563
-- 32 f67c5f
-- 64 f65e3b
-- 128 edcf72
-- 256 edcc61
-- 512 edc850
-- 1024 edc53f
-- 2048 edc22e
+# Usage
 
-Font color for each tile:
+This program compiles on `sdcc`. Porting to Keil or other development boards should be not too diffcult. 
 
-- For 2 and 4: 776e65
-- For the rest: f9f6f2
+To compile, run `make` in the root directory. The output Intel hex `.ihx` file is `build/main.ihx`. 
 
-Background color for empty tiles: cfc0b3
+To flash using a Silicon Lab's EC2 USB Debugger, with `ec2-new`(see [here](https://github.com/paragonRobotics/ec2-new])) being the flasher software, run `make flash`. You can probably use other flashers.
 
-Color for margins: bcac9e
+Most probably, you will be running this game on other development boards. You'll need to change the port configurations in `src/drivers/system.c`, and provide the relevent subroutines for the screen and keyboards you use. 
 
-Data retrieved from `https://play2048.co/main.css`
+# Directory structure
 
-Size:
+```
+src: source code
+    drivers/: routines dealing with hardware components
+    test/: tests 2048_core.c
+    2048_core.c: game logic. Should contain (almost) no MCU dependent parts.
+    2048_display.c: routines for drawing the gameboard on screen.
+    game.c: main file, containing game logic
+include: headers
+res: resource files, and processing scripts
+utils: misc scripts.
+```
 
-- For each tile, 71px
-- For margin, 12px
 
-Note that $$12 * 3 + 71 * 4 = 320$$
+# License
 
+The code is released into the public domain, with the exception of some subroutines for the tft screen and lcd screen, which are provided by professor Yang Yanjun and the vendor. The game's graphic design and the sound snippet belows to their original copyright owners respectively.
