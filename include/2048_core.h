@@ -10,10 +10,10 @@
 #ifdef __SDCC
 // TODO: why __pdata would not work.
 typedef __xdata uint8_t board_type[BOARD_SIZE * BOARD_SIZE]; 
-extern __xdata uint32_t score;
+extern __xdata uint16_t score;
 #else
 typedef uint8_t board_type[BOARD_SIZE * BOARD_SIZE]; 
-extern  uint32_t score;
+extern  uint16_t score;
 #endif
 extern board_type board; 
 

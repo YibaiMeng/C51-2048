@@ -5,8 +5,7 @@
 #include "2048_core.h"
 #include "2048_display.h"
 #include "design_specs.h"
-
-//#include "lcd1602.h"
+#include "lcd1602.h"
 
 #define START_X 0
 #define START_Y 80  // (SCREEN_HEIGHT - SCREEN_WIDTH)/2
@@ -128,9 +127,53 @@ void draw_board(board_type board) {
     }   
 }
 
+static __xdata char score_buffer[16];
 void show_score() {
-    1;
+    int i;
+    for(i = 0; i < 16; i++) {
+        score_buffer[i] = ' '; //space
+    }
     /*
-    sprintf(buffer, "Score: %d", score);
-    show_string();*/
+    score = 0;
+    for(i = 0; i < 16; i++) {
+        if(board[i] != 1 && board[i] != 2) {
+            score += board[i];
+        }
+    }*/
+    sprintf(score_buffer, "Score: %d", score);
+    for(i = 0; i < 16; i++) {
+        if (score_buffer[i] == '\0') {
+            score_buffer[i] = ' ';
+            break;
+        }
+    }
+    printf("%s\n", score_buffer);
+    for(i = 0; i < 16; i++) {
+        lcd1602_write_xy(0, i, score_buffer[i]);
+    }
+}
+
+void game_over() {
+    int i;
+    for(i = 0; i < 16; i++) {
+        score_buffer[i] = ' '; //space
+    }
+    /*
+    score = 0;
+    for(i = 0; i < 16; i++) {
+        if(board[i] != 1 && board[i] != 2) {
+            score += board[i];
+        }
+    }*/
+    sprintf(score_buffer, "Game Over!");
+    for(i = 0; i < 16; i++) {
+        if (score_buffer[i] == '\0') {
+            score_buffer[i] = ' ';
+            break;
+        }
+    }
+    printf("%s\n", score_buffer);
+    for(i = 0; i < 16; i++) {
+        lcd1602_write_xy(0, i, score_buffer[i]);
+    }
 }

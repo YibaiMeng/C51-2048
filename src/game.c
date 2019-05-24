@@ -6,6 +6,7 @@
 #include "2048_core.h"
 #include "keyboard.h"
 #include "dac.h"
+#include "lcd1602.h"
 board_type board;
 
 #define DEBUG printf
@@ -14,6 +15,7 @@ void main(void) {
     bool is_success;
     system_init();
     dac_init();
+    lcd1602_init();
     ili9486_init();
     display_color(0xffdd); // RGB faf8ef
     draw_board_outline();
@@ -24,6 +26,7 @@ void main(void) {
     delay(200);
     while(1) {
         if (game_ended(board)) {
+            game_over();
             printf("[game.c] Game Over\n");
             break;
         }
@@ -66,15 +69,15 @@ void main(void) {
         if(is_success) {
             printf("[game.c] Move successful!\n");
             add_random_tile(board);
-            draw_board(board);
             play_sound();
+            draw_board(board);
         }
         else {
            printf("[game.c] Move not successful!\n");
            continue;
         }
-        //show_score();
-        delay(10000);
+        show_score();
+        delay(1000);
     }
     while (1) { 
     } 

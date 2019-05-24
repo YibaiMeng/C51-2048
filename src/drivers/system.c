@@ -34,7 +34,7 @@ void port_init() {
     P1MDOUT = 0xFF; // 推挽
     P2MDOUT = 0xFF; // 推挽
     P3MDOUT = 0xFF; // 推挽
-    // P74OUT = 0x00; // 开漏输出 P6和P5 
+    P74OUT = 0x30; // 开漏输出 P6和P5 
 }
 
 void xram_init() {

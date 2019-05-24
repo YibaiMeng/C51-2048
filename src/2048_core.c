@@ -19,9 +19,9 @@ int row2 = 30;
 #endif
 
 #ifdef __SDCC
-__xdata uint32_t score = 0;
+__xdata uint16_t score = 0;
 #else
-uint32_t score = 0;
+uint16_t score = 0;
 #endif
 /*
  * Function: concatenate
@@ -38,7 +38,8 @@ uint32_t score = 0;
  *  returns: Whether anything changed
  */
 static bool concate(board_type board, uint8_t* f, bool check_only) {
-	uint8_t temp[BOARD_SIZE]; // make tmp and board the same type
+    static __code const uint32_t score_table[] = {0, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096};
+	uint8_t __data temp[BOARD_SIZE]; // make tmp and board the same type
 	int i, j;
 	bool ret;
 	for(i = 0; i < BOARD_SIZE; i++) {
@@ -57,7 +58,9 @@ static bool concate(board_type board, uint8_t* f, bool check_only) {
 	    if(temp[i] == temp[i + 1] && temp[i] != 0) {
 	        temp[i] += 1;
 	        if(check_only == 0) {
-	            score += 1 << temp[i]; // For each successful merge, points worth the value of the merged tile is added. I did not consult the src of the original！ I made up the rules myself.
+	            //DEBUG("[concate] FIRST Score is %i, and score_table  tmp i is%i\n", score, score_table[temp[i]]); 
+	            score = score + score_table[temp[i]];// For each successful merge, points worth the value of the merged tile is added. I did not consult the src of the original！ I made up the rules myself.
+                //DEBUG("[concate] NOW Score is %i, and tmp i is %i\n", score, score_table[temp[i]]); 
             }
 		    for(int k = i + 1; k < j - 1; k++) {
 		        temp[k] = temp[k+1];  
